@@ -1,0 +1,30 @@
+version: "2.4"
+services:
+    db:
+        image: postgres:12.5
+        container_name: db
+        ports:
+          - 5432:5432
+        environment:
+            POSTGRES_DB: practice
+            POSTGRES_USER: practice
+            POSTGRES_PASSWORD: practice
+        networks:
+          - practice
+    practice:
+        image: node:14.15.0-alpine
+        container_name: practice
+        command: sh -c "yarn start"
+        working_dir: /app
+        volumes:
+            - .:/app
+        environment:
+            PORT: "8080"
+        ports:
+          - 8080:8080
+        networks:
+          - practice
+
+networks:
+    practice:
+        external: false

@@ -1,0 +1,26 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: Service
+paths:
+  /practice/version:
+    x-exegesis-controller: version
+    get:
+      summary: Get version of application
+      operationId: version
+      responses:
+        "200":
+          description: Got the response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+components:
+  schemas:
+    Response:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: practice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: practice
+  template:
+    metadata:
+      labels:
+        app: practice
+    spec:
+      containers:
+        - name: practice
+          image: rg.fr-par.scw.cloud/thetribe/practice-devops-1:0.3.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: "51.159.75.109"
+            - name: DB_PORT
+              value: "32878"
+            - name: DB_NAME
+              value: practice-rdb
+            - name: DB_USER
+              value: practice
+            - name: DB_PASSWORD
+              value: Practicepracti1@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: practice-svc
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: practice
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: practice-app
+spec:
+  rules:
+    - host: 3e66c467-234c-4fc0-bca4-a75cb88ff954.nodes.k8s.fr-par.scw.cloud
+      http:
+        paths:
+          - path: /practice/
+            pathType: Prefix
+            backend:
+              service:
+                name: practice-svc
+                port:
+                  number: 80
